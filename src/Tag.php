@@ -10,6 +10,7 @@ use Proner\PhpPimaco\Tags\QrCode;
 class Tag
 {
     private $content;
+    private $tags;
 
     private $width;
     private $height;
@@ -17,12 +18,14 @@ class Tag
     private $size;
     private $padding;
     private $marginLeft;
+    public $align;
+    public $ln;
 
     /**
      * Tag constructor.
      * @param string|null $content
      */
-    public function __construct(string $content = null)
+    public function __construct($content = null)
     {
         $this->tags = new \ArrayObject();
 
@@ -125,7 +128,7 @@ class Tag
 
     /**
      * @param string $content
-     * @param null $typeCode
+     * @param string|null $typeCode
      * @return Barcode
      */
     public function barcode(string $content, $typeCode = null)
@@ -141,7 +144,7 @@ class Tag
      * @param string|null $fontSize
      * @return QrCode
      */
-    public function qrcode(string $content, string $label = null, string $fontSize = null)
+    public function qrcode(string $content, $label = null, $fontSize = null)
     {
         $qrcode = new QrCode($content);
 
@@ -150,7 +153,7 @@ class Tag
         }
 
         if ($fontSize) {
-            $qrcode->setLabelFontSize($fontSize);
+            $qrcode->setLabelFontSize((float)$fontSize);
         }
 
         $this->tags->append($qrcode);
@@ -177,11 +180,11 @@ class Tag
     }
 
     /**
-     * @param null $side
+     * @param string|null $side
      * @param bool $margin
      * @return string
      */
-    public function render($side = null, $margin = false)
+    public function render($side = null, bool $margin = false)
     {
         $this->content = "";
 
